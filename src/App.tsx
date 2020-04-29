@@ -1,6 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useControlledComponent } from "./hooks";
+import { StyleSheet, View } from "react-native";
+
+import ControlledConponent, {
+  useControlledComponent,
+} from "./ControlledComponent";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,29 +11,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  errors: {
-    height: 24,
-    flexDirection: "row",
-  },
-  error: {
-    marginRight: 8,
-    color: "red",
-    fontSize: 20,
-  },
-  label: {
-    flex: 1,
-    fontWeight: "bold",
-    fontSize: 24,
-  },
-  input: {
-    flex: 1,
-    padding: 4,
-    borderWidth: 1,
-    fontSize: 24,
-  },
 });
 
-function validate(value: string) {
+function validateName(value: string) {
+  const result = [];
+  if (!value) {
+    result.push(new Error("input this field."));
+  }
+  return result;
+}
+
+function validateAge(value: string) {
   const result = [];
   if (!value) {
     result.push(new Error("input this field."));
@@ -42,19 +33,13 @@ function validate(value: string) {
 }
 
 export default function App() {
-  const age = useControlledComponent(validate);
+  const name = useControlledComponent(validateName);
+  const age = useControlledComponent(validateAge);
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.label}>Age</Text>
-        <TextInput {...age} style={styles.input} />
-        <View style={styles.errors}>
-          {age.errors.map((error) => (
-            <Text style={styles.error}>{error.message}</Text>
-          ))}
-        </View>
-      </View>
+      <ControlledConponent label="Name" {...name} />
+      <ControlledConponent label="Age" {...age} />
     </View>
   );
 }
