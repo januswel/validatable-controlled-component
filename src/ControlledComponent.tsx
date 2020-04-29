@@ -58,7 +58,9 @@ export default function ControlledComponent(props: Props) {
       <TextInput {...props} style={styles.input} />
       <View style={styles.errors}>
         {props.errors.map((error) => (
-          <Text style={styles.error}>{error.message}</Text>
+          <Text key={error.message} style={styles.error}>
+            {error.message}
+          </Text>
         ))}
       </View>
     </View>
